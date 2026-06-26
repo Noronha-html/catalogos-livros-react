@@ -1,0 +1,50 @@
+[
+    {
+        "id": "01",
+        "titulo": "Dom Casmurro",
+        "autor": "Machado de Assis",
+        "categoria": "Romance",
+        "ano": 1899,
+        "nota": 4.8,
+        "capa": "/imagens/dom-casmurro.jpg",
+        "status": "lido",
+        "favorito": true,
+        "tags": ["clássico", "romance", "psicológico"]
+    },
+    {
+        "id": "02",
+        "titulo": "Iracema",
+        "autor": "José de Alencar",
+        "categoria": "Romance",
+        "ano": 1865,
+        "nota": 4.3,
+        "capa": "/imagens/iracema.jpg",
+        "status": "lendo",
+        "favorito": false,
+        "tags": ["clássico", "indianismo", "romance"]
+    },
+    {
+        "id": "03",
+        "titulo": "O Cortiço",
+        "autor": "Aluísio Azevedo",
+        "categoria": "Romance",
+        "ano": 1890,
+        "nota": 4.6,
+        "capa": "/imagens/o-cortico.jpg",
+        "status": "lido",
+        "favorito": true,
+        "tags": ["clássico", "realismo", "urbano"]
+    },
+    {
+        "id": "04",
+        "titulo": "Senhora",
+        "autor": "José de Alencar",
+        "categoria": "Romance",
+        "ano": 1875,
+        "nota": 4.1,
+        "capa": "/imagens/senhora.jpg",
+        "status": "quero ler",
+        "favorito": false,
+        "tags": ["clássico", "romance", "séc. XIX"]
+    }
+]
