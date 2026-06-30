@@ -1,55 +1,101 @@
 function getInitials(titulo) {
   return titulo
-    .split(' ')
+    .split(" ")
     .filter((w) => w.length > 2)
     .slice(0, 2)
     .map((w) => w[0].toUpperCase())
-    .join('');
+    .join("");
 }
 
 function CardLivro({ livro, favorito, aoAlternarFavorito }) {
   const initials = getInitials(livro.titulo);
-  const statusClass = `status status-${livro.status.toLowerCase().replace(' ', '-')}`;
+
+  const statusClass = `status status-${livro.status
+    .toLowerCase()
+    .replace(" ", "-")}`;
 
   return (
-    <article
-      className="card-livro"
-      data-initials={initials}
-    >
-      <div className="card-livro__cabecalho">
-        <span className="categoria">{livro.categoria}</span>
-        <button
-          className={`favorito ${favorito ? 'ativo' : ''}`}
-          onClick={() => aoAlternarFavorito(livro.id)}
-          aria-label={favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-        >
-          {favorito ? '★' : '☆'}
-        </button>
+    <article className="card-livro">
+
+      <div className="card-capa">
+
+        <div className="card-capa-overlay">
+
+          <span className="card-iniciais">
+            {initials}
+          </span>
+
+        </div>
+
       </div>
 
-      <h2>{livro.titulo}</h2>
+      <div className="card-conteudo">
 
-      <p className="autor">
-        <strong>Autor:</strong> {livro.autor}
-      </p>
+        <div className="card-topo">
 
-      <p className={statusClass}>
-        {livro.status}
-      </p>
+          <span className="categoria">
+            {livro.categoria}
+          </span>
 
-      {livro.descricao && (
-        <p className="descricao">{livro.descricao}</p>
-      )}
+          <button
+            className={`favorito ${favorito ? "ativo" : ""}`}
+            onClick={() => aoAlternarFavorito(livro.id)}
+            aria-label={
+              favorito
+                ? "Remover dos favoritos"
+                : "Adicionar aos favoritos"
+            }
+          >
+            {favorito ? "★" : "☆"}
+          </button>
 
-      {livro.tags && livro.tags.length > 0 && (
+        </div>
+
+        <h2 className="titulo-livro">
+          {livro.titulo}
+        </h2>
+
+        <p className="autor">
+          {livro.autor}
+        </p>
+
+        <div className="livro-infos">
+
+          <span className="nota">
+            ⭐ {livro.nota}
+          </span>
+
+          <span className="paginas">
+            📄 {livro.paginas} páginas
+          </span>
+
+        </div>
+
+        <p className={statusClass}>
+          {livro.status}
+        </p>
+
+        <p className="descricao">
+          {livro.descricao}
+        </p>
+
         <div className="tags">
+
           {livro.tags.map((tag) => (
-            <span key={tag} className="tag">
+
+            <span
+              key={tag}
+              className="tag"
+            >
               #{tag}
             </span>
+
           ))}
+
         </div>
-      )}
+
+      </div>
+
     </article>
   );
 }

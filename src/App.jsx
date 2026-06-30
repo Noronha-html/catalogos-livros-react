@@ -1,23 +1,25 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from "react";
 
-import Header from './components/Header';
-import Footer from './components/Footer';
-import PainelEstatisticas from './components/PainelEstatisticas';
-import CampoBusca from './components/CampoBusca';
-import FiltroCategoria from './components/FiltroCategoria';
-import FiltroStatus from './components/FiltroStatus';
-import ListaLivros from './components/ListaLivros';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import PainelEstatisticas from "./components/PainelEstatisticas";
+import CampoBusca from "./components/CampoBusca";
+import FiltroCategoria from "./components/FiltroCategoria";
+import FiltroStatus from "./components/FiltroStatus";
+import ListaLivros from "./components/ListaLivros";
 
-import livrosBase from './data/livros.json';
+import livrosBase from "./data/livros.json";
 
 function App() {
-  const [busca, setBusca] = useState('');
-  const [categoriaAtiva, setCategoriaAtiva] = useState('Todas');
-  const [statusAtivo, setStatusAtivo] = useState('Todos');
+  const [busca, setBusca] = useState("");
+  const [categoriaAtiva, setCategoriaAtiva] = useState("Todas");
+  const [statusAtivo, setStatusAtivo] = useState("Todos");
 
   const [favoritos, setFavoritos] = useState(() => {
     try {
-      const favoritosSalvos = localStorage.getItem('biblioteca-viva:favoritos');
+      const favoritosSalvos = localStorage.getItem(
+        "biblioteca-viva:favoritos"
+      );
       return favoritosSalvos ? JSON.parse(favoritosSalvos) : [];
     } catch {
       return [];
@@ -25,7 +27,10 @@ function App() {
   });
 
   useEffect(() => {
-    localStorage.setItem('biblioteca-viva:favoritos', JSON.stringify(favoritos));
+    localStorage.setItem(
+      "biblioteca-viva:favoritos",
+      JSON.stringify(favoritos)
+    );
   }, [favoritos]);
 
   const categorias = useMemo(() => {
@@ -43,16 +48,24 @@ function App() {
         livro.categoria,
         ...livro.tags,
       ]
-        .join(' ')
+        .join(" ")
         .toLowerCase();
 
       const combinaComBusca = textoPesquisavel.includes(termo);
-      const combinaComCategoria =
-        categoriaAtiva === 'Todas' || livro.categoria === categoriaAtiva;
-      const combinaComStatus =
-        statusAtivo === 'Todos' || livro.status === statusAtivo;
 
-      return combinaComBusca && combinaComCategoria && combinaComStatus;
+      const combinaComCategoria =
+        categoriaAtiva === "Todas" ||
+        livro.categoria === categoriaAtiva;
+
+      const combinaComStatus =
+        statusAtivo === "Todos" ||
+        livro.status === statusAtivo;
+
+      return (
+        combinaComBusca &&
+        combinaComCategoria &&
+        combinaComStatus
+      );
     });
   }, [busca, categoriaAtiva, statusAtivo]);
 
@@ -61,6 +74,7 @@ function App() {
       if (favoritosAtuais.includes(idLivro)) {
         return favoritosAtuais.filter((id) => id !== idLivro);
       }
+
       return [...favoritosAtuais, idLivro];
     });
   }
@@ -69,37 +83,110 @@ function App() {
     <>
       <Header />
 
-      <main className="pagina" id="catalogo">
+      <main>
+
         <section className="hero">
-          <span className="hero-eyebrow">Projeto React Guiado por Dados</span>
-          <h1>Catálogo para organizar leituras e recomendações</h1>
-          <p className="hero-sub">
-            Uma interface construída com componentes reutilizáveis. Filtre dinamicamente, salve favoritos e explore o seu acervo.
-          </p>
+
+          <div className="hero-left">
+
+            <span className="hero-badge">
+              Biblioteca Digital
+            </span>
+
+            <h1>
+              Descubra mundos incríveis através da leitura.
+            </h1>
+
+            <p>
+              Explore aventuras, fantasia, ficção científica e muitos
+              outros universos. Organize sua coleção, favorite seus
+              livros preferidos e encontre facilmente sua próxima
+              leitura.
+            </p>
+
+            <CampoBusca
+              valor={busca}
+              aoAlterar={setBusca}
+            />
+
+          </div>
+
+          <div className="hero-right">
+
+            <div className="hero-card">
+
+              <PainelEstatisticas
+                total={livrosBase.length}
+                exibidos={livrosFiltrados.length}
+                favoritos={favoritos.length}
+                categorias={categorias.length}
+              />
+
+            </div>
+
+          </div>
+
         </section>
 
-        <PainelEstatisticas
-          total={livrosBase.length}
-          exibidos={livrosFiltrados.length}
-          favoritos={favoritos.length}
-          categorias={categorias.length}
-        />
+        <section
+          className="dashboard"
+          id="filtros"
+        >
 
-        <section className="filtros" id="filtros">
-          <CampoBusca valor={busca} aoAlterar={setBusca} />
-          <FiltroCategoria
-            categorias={categorias}
-            valor={categoriaAtiva}
-            aoAlterar={setCategoriaAtiva}
+          <div className="dashboard-left">
+
+            <div className="filtros">
+
+              <FiltroCategoria
+                categorias={categorias}
+                valor={categoriaAtiva}
+                aoAlterar={setCategoriaAtiva}
+              />
+
+              <FiltroStatus
+                valor={statusAtivo}
+                aoAlterar={setStatusAtivo}
+              />
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section
+          className="catalogo"
+          id="catalogo"
+        >
+
+          <div className="secao-titulo">
+
+            <div>
+
+              <h2>Catálogo</h2>
+
+              <span>
+                Explore todos os livros disponíveis.
+              </span>
+
+            </div>
+
+            <span>
+              {livrosFiltrados.length} livro
+              {livrosFiltrados.length !== 1 && "s"} encontrado
+              {livrosFiltrados.length !== 1 && "s"}
+            </span>
+
+          </div>
+
+          <ListaLivros
+            livros={livrosFiltrados}
+            favoritos={favoritos}
+            aoAlternarFavorito={alternarFavorito}
           />
-          <FiltroStatus valor={statusAtivo} aoAlterar={setStatusAtivo} />
+
         </section>
 
-        <ListaLivros
-          livros={livrosFiltrados}
-          favoritos={favoritos}
-          aoAlternarFavorito={alternarFavorito}
-        />
       </main>
 
       <Footer />
@@ -108,4 +195,3 @@ function App() {
 }
 
 export default App;
-
